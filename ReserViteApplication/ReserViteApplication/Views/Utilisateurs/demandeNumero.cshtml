@@ -1,0 +1,20 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h2>Veuillez entrer votre numéro de téléphone:</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="confirmationForm" method="post" asp-action="confirmerEmail" asp-controller="Utilisateurs">
+
+            <div class="form-floating mb-3">
+                <input name="numero" id="confirmationCode" class="form-control" placeholder="Numéro de confirmation" />
+                <label for="confirmationCode">Numéro de téléphone</label>
+            </div>
+
+            <button type="submit" class="btn btn-dark">Confirmer</button>
+        </form>
+    </div>
+</div>

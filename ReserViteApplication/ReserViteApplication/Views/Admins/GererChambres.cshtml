@@ -1,0 +1,87 @@
+﻿@model IEnumerable<ReserViteApplication.Models.Chambre>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Gestion des chambres</h1>
+
+<p>
+    <a href="~/Chambres/Create">Créer chambre</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomChambre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrixParNuit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreDePersonnes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstDisponible)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo4)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomChambre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrixParNuit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreDePersonnes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstDisponible)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Photo1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Photo2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Photo3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Photo4)
+                </td>
+                <td>
+                    <a href="~/Chambres/Edit?id=@item.ChambreId">Modifier</a> |
+                    <a href="~/Chambres/DetailsAdm?id=@item.ChambreId">Details</a> |
+                    <a href="~/Chambres/Delete?id=@item.ChambreId">Supprimer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a href="~/Admins/Index">Retourner dans la page principale</a>
+</div>

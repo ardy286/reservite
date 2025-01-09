@@ -1,0 +1,44 @@
+﻿@model ReserViteApplication.Models.Paiement
+
+<div class="container mt-5">
+    <h1>Paiement</h1>
+    <hr />
+
+    <!-- Récapitulatif de la réservation -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h4>Détails de la réservation</h4>
+            <p><strong>Date d'arrivée :</strong> @Model.Reservation?.DateArrivee.ToShortDateString()</p>
+            <p><strong>Date de départ :</strong> @Model.Reservation?.DateDepart.ToShortDateString()</p>
+            <p><strong>Montant total :</strong> @Model.Reservation?.MontantTotal €</p>
+            <p><strong>Statut :</strong> @Model.Reservation?.Statut</p>
+        </div>
+    </div>
+
+    <!-- Formulaire de paiement -->
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Informations de paiement</h4>
+            <form asp-action="ProcessPaiement" method="post">
+                <input type="hidden" asp-for="ChambreId" />
+                <input type="hidden" asp-for="UtilisateurId" />
+                <input type="hidden" asp-for="ReservationId" />
+
+                <!-- Champs de paiement -->
+                <div class="mb-3">
+                    <label asp-for="ModeDePaiement" class="form-label">Mode de paiement</label>
+                    <select class="form-select" asp-for="ModeDePaiement" required>
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="Carte de Crédit">Carte de Crédit</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                    <span asp-validation-for="ModeDePaiement" class="text-danger"></span>
+                </div>
+
+                <!-- Autres champs de paiement... -->
+
+                <button type="submit" class="btn btn-primary">Payer maintenant</button>
+            </form>
+        </div>
+    </div>
+</div>

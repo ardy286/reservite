@@ -1,0 +1,57 @@
+﻿@model ReserViteApplication.Models.Utilisateur
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Supprimer utilisateur</h1>
+
+<h3>Êtes vous sû de vouloir supprimer cet utilisateur?</h3>
+<div>
+    <h4>Utilisateur</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nom)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Prenom)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Prenom)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Numero)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Numero)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MotDePasse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MotDePasse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EstAdmin)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EstAdmin)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="UtilisateurId" />
+        <input type="submit" value="Supprimer" class="btn btn-danger" /> |
+        <a href="~/Utilisateurs/Index">Retouner dans la page de gestion des utilisateurs</a>
+    </form>
+</div>

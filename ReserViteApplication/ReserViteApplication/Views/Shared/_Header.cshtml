@@ -1,0 +1,56 @@
+﻿@{
+    var nomUtilisateur = Context.Session.GetString("Nom");
+    var prenomUtilisateur = Context.Session.GetString("Prenom");
+    var idUtilisateur = Context.Session.GetInt32("UtilisateurId");
+    var estAdminInt = Context.Session.GetInt32("EstAdmin");
+}
+
+@* Views/Shared/_Header.cshtml *@
+<nav class="navbar border-bottom navbar-expand-lg" style="background-color: white;">
+    <div class="container-fluid">
+        @if (estAdminInt == 0)
+        {
+            <a class="navbar-brand" href="~/">
+                <img src="~/images/logoReserVite.png" alt="RéserVite Logo" style="height: 40px;">
+            </a>
+        }
+        else if (estAdminInt == 1)
+        {
+            <a class="navbar-brand" href="~/Admins/Index">
+                <img src="~/images/logoReserVite.png" alt="RéserVite Logo" style="height: 40px;">
+            </a>
+        }else{
+            <a class="navbar-brand" href="~/">
+                <img src="~/images/logoReserVite.png" alt="RéserVite Logo" style="height: 40px;">
+            </a>
+        }
+        <div class="d-flex">
+           
+            @if (string.IsNullOrEmpty(nomUtilisateur) && string.IsNullOrEmpty(prenomUtilisateur))
+            {
+                @Html.Partial("_LoginPartial")
+                @*<a href="~/Utilisateurs/Login" title="Se connecter" class="btn btn-dark me-2">Connexion</a>
+                <a href="~/Utilisateurs/Create" title="S'inscrire" class="btn btn-dark">Inscription</a>*@
+            }
+            else
+            {
+                <a href="~/Utilisateurs/MessagerieUt" title="Mes messages" class="me-2">
+                    <i class="fa-regular fa-message fa-2x text-dark"></i>
+                </a>
+                @if(estAdminInt == 0){
+                    <a href="~/Chambres/MesReservationsEnCours?idUt=@idUtilisateur" title="Mes réservations"><i class="fa-solid fa-suitcase fa-2x text-dark"></i></a>
+                    <a class="btn btn-outline-primary me-2 ms-2" title="Mon profil" href="~/Utilisateurs/EditUt?id=@idUtilisateur">@prenomUtilisateur @nomUtilisateur</a>
+                }else
+                {
+                    <a class="btn btn-outline-primary me-2 ms-2" title="Mon profil" href="~/Utilisateurs/Edit?id=@idUtilisateur">@prenomUtilisateur @nomUtilisateur</a>
+
+                }
+                <a href="~/Utilisateurs/Logout" title="Se déconnecter" class="btn btn-dark">Déconnexion</a>
+            }
+        </div>
+    </div>
+</nav>
+
+
+
+

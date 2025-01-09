@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "MessagerieUt";
+}
+<style>
+    .body-content {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .control-group {
+        padding-top: 50px;
+    }
+
+    label {
+        width: 100px;
+    }
+
+    #signalr-message-panel {
+        height: calc(100vh - 200px);
+    }
+</style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js" integrity="sha512-7SRCYIJtR6F8ocwW7UxW6wGKqbSyqREDbfCORCbGLatU0iugBLwyOXpzhkPyHIFdBO0K2VCu57fvP2Twgx1o2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<div class="container mt-5">
+    <div class="d-flex flex-column">
+        <!-- Section des messages reçus -->
+        <div>
+            <h4 class="mb-4">Messagerie</h4>
+            <div id="signalr-message-panel" class="border rounded p-3" style="height:400px; overflow-y: scroll; background-color: #f9f9f9;"></div>
+        </div>
+        <!-- Section pour envoyer un message -->
+        <div class="mt-4">
+            <div class="form-group d-flex">
+                <!-- Champ de texte -->
+                <input type="text" id="broadcast" placeholder="Message à diffuser" class="form-control mr-2" />
+                <!-- Bouton -->
+                <button id="btn-broadcast" class="btn btn-primary">Envoyer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+           // Crée une connexion SignalR en spécifiant l'URL du hub
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/messagerieHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+    const notificationPanel = $('#notifications');
+
+    // Fonction pour afficher des notifications
+    function showNotification(message) {
+        notificationPanel.text(message).fadeIn().delay(3000).fadeOut();
+    }
+
+    // Fonction appelée lorsqu'un message est reçu du hub
+    connection.on("ReceiveMessage", (message) => {
+        $('#signalr-message-panel').prepend($('<div />').text(message));
+    });
+
+
+    // Fonction appelée lorsqu'une notification est reçue du hub
+    connection.on("Notify", (notification) => {
+        showNotification(notification);
+    });
+
+    // Gestionnaire d'événements pour le bouton "Diffuser"
+    $('#btn-broadcast').click(function () {
+        const message = $('#broadcast').val();
+        // Vérifie si l'utilisateur est un administrateur ou non
+        const isAdmin = true; // À adapter selon le rôle de l'utilisateur
+        if (isAdmin) {
+            connection.invoke("BroadcastMessage", message).catch(err =>
+                console.error(err.toString()));
+        } else {
+            connection.invoke("SendMessageToAdmin", message).catch(err =>
+                console.error(err.toString()));
+        }
+    });
+
+    // Fonction asynchrone pour démarrer la connexion SignalR
+    async function start() {
+        try {
+            await connection.start();
+            console.log('connected');
+            showNotification("Connexion établie avec succès !");
+        } catch (err) {
+            console.error(err.toString());
+            showNotification("Échec de la connexion. Nouvelle tentative...");
+            setTimeout(() => start(), 5000);
+        }
+    }
+
+    // Redémarre la connexion si elle est fermée
+    connection.onclose(async () => {
+        await start();
+    });
+    start();
+
+</script>
+

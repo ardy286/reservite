@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ReserViteApplication.Models.Reservation>
+
+@{
+    ViewData["Title"] = "MesReservationsAnciennes";
+    var idUtilisateur = Context.Session.GetInt32("UtilisateurId");
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="~/css/style.css">
+
+</head>
+<body>
+    <div class="d-flex justify-content-center mt-2 mb-4">
+        <a href="~/Chambres/MesReservationsEnCours?idUt=@idUtilisateur" title="Mes réservations en cours" class="btn btn-dark me-1">Mes réservations en cours</a>
+        <a href="~/Chambres/MesReservationsAVenir?idUt=@idUtilisateur" title="Mes réservations à venir" class="btn btn-dark me-1">Mes réservations à venir</a>
+        <a href="~/Chambres/MesReservationsAnciennes?idUt=@idUtilisateur" title="Mes anciennes réservations" class="btn btn-outline-secondary me-1">Mes anciennes réservations</a>
+    </div>
+    @if (!Model.Any())
+    {
+        <h2>Aucune réservation trouvée.</h2>
+    }
+    else
+    {
+        <h2 class="mb-4">@ViewBag.titre</h2>
+        @foreach (var reservation in Model)
+        {
+            <p>Date d'arrivée': @reservation.DateArrivee</p>
+            <p>Date de départ: @reservation.DateDepart</p>
+            <p>Montant totale: @reservation.MontantTotal $</p>
+            <div class="row mb-5">
+                <!-- Exemple de type d'hébergement -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <a><img src="@reservation.Chambre.Photo1" class="card-img-top" alt="photo"></a>
+                        <div class="card-body text-center">
+                            <a><h5 class="card-title">@reservation.Chambre.NomChambre</h5></a>
+                            <p>Nombre de personne: @reservation.Chambre.NombreDePersonnes</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ajoute d'autres types d'hébergements si nécessaire -->
+            </div>
+        }
+    }
+</body>
+

@@ -1,0 +1,45 @@
+﻿@model ReserViteApplication.Models.Reservation
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Supprimer réservation</h1>
+
+<h3>Êtes vous sûr de vouloir supprimer cette réservation?</h3>
+<div>
+    <h4>Reservation</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateArrivee)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateArrivee)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateDepart)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateDepart)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MontantTotal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MontantTotal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Statut)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Statut)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ReservationId" />
+        <input type="submit" value="Supprimer" class="btn btn-danger" /> |
+        <a asp-action="Index">Retourner dans la page de gestion </a>
+    </form>
+</div>

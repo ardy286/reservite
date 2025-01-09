@@ -1,0 +1,210 @@
+﻿@model ReserViteApplication.Models.Chambre
+
+@{
+    ViewData["Title"] = "Details";
+    var nomUtilisateur = Context.Session.GetString("Nom");
+    var prenomUtilisateur = Context.Session.GetString("Prenom");
+    var idUtilisateur = Context.Session.GetInt32("UtilisateurId");
+    var reservedDates = ViewData["ReservedDates"] as IEnumerable<dynamic>;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+
+    <div class="details-container mt-5">
+        <!-- Informations générales de la chambre -->
+        <div class="row mb-5">
+            <!-- Galerie d'images -->
+            <div class="col-md-8">
+                <h3 class="mb-4">@Model.NomChambre</h3>
+                <div class="gallery row">
+                    <div class="col-md-6">
+                        @if (!string.IsNullOrEmpty(Model.Photo1))
+                        {
+                            <img src="@Model.Photo1" class="img-fluid" alt="Photo principale">
+                        }
+                        
+                    </div>
+                    <div class="col-md-6">
+                        @if (!string.IsNullOrEmpty(Model.Photo2))
+                        {
+                            <img src="@Model.Photo2" class="img-fluid" alt="Deuxième photo">
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        @if (!string.IsNullOrEmpty(Model.Photo3))
+                        {
+                            <img src="@Model.Photo3" class="img-fluid" alt="Photo supplémentaire 1">
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        @if (!string.IsNullOrEmpty(Model.Photo4))
+                        {
+                            <img src="@Model.Photo4" class="img-fluid" alt="Photo supplémentaire 2">
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <p>Type de chambre : @Model.Type</p>
+                <p>Prix par nuit : <strong>@Model.PrixParNuit €</strong></p>
+                <p>Capacité : @Model.NombreDePersonnes personnes</p>
+                <form action="~/Chambres/AfirmReservation" method="get" id="reservationForm">
+                    <!-- Formulaire de dates -->
+                    <label for="checkin" class="form-label">Date d'arrivée</label>
+                    <input type="date" class="form-control" id="checkin" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+
+                    <label for="checkout" class="form-label">Date de départ</label>
+                    <input type="date" class="form-control" id="checkout" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+
+                    <!-- Champs cachés pour les données supplémentaires -->
+                    <input type="hidden" name="idChambre" value="@Model.ChambreId" />
+                    <input type="hidden" name="idUt" value="@idUtilisateur" />
+                    <input type="hidden" name="checkin" id="checkinInput" />
+                    <input type="hidden" name="checkout" id="checkoutInput" />
+
+                    @if (string.IsNullOrEmpty(nomUtilisateur) && string.IsNullOrEmpty(prenomUtilisateur))
+                    {
+                        <p>Nb: Pour pouvoir réserver, il faut vous connecter!</p>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-dark mb-2">Réserver</button>
+                    }
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- Description de la chambre -->
+        <div class="mt-5">
+            <h4>Description</h4>
+            <p>
+                @Model.Description
+            </p>
+        </div>
+
+        <!-- Points forts de la chambre -->
+        <div class="mt-4">
+            <h4>Ses points forts</h4>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item"><i class="bi bi-wifi"></i> Wi-Fi gratuit</li>
+                <li class="list-group-item"><i class="bi bi-car-front"></i> Parking gratuit</li>
+                <li class="list-group-item"><i class="bi bi-cup-hot"></i> Petit-déjeuner inclus</li>
+                <li class="list-group-item"><i class="bi bi-door-open"></i> Réception 24h/24</li>
+                <li class="list-group-item"><i class="bi bi-people"></i> Chambres familiales</li>
+            </ul>
+        </div>
+
+
+        <!-- Liens de navigation -->
+        <!-- <div class="mt-4">
+            <a asp-action="Edit" title="Modifier" asp-route-id="@Model?.ChambreId" class="btn btn-secondary me-2">Modifier</a>
+            <a asp-action="Index" title="Retour" class="btn btn-link">Retour à la liste</a>
+        </div> -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const today = new Date().toISOString().split('T')[0];
+
+            const checkinInput = document.getElementById('checkin');
+            const checkoutInput = document.getElementById('checkout');
+            const reservedDates = JSON.parse('@Html.Raw(Json.Serialize(ViewData["ReservedDates"]))');
+
+        // Convertir les dates réservées en objets Date pour comparaison
+        const reservedPeriods = reservedDates.map(period => ({
+            start: new Date(period.start),
+            end: new Date(period.end)
+        }));
+
+        function isOverlapping(checkin, checkout) {
+            const checkinDate = new Date(checkin);
+            const checkoutDate = new Date(checkout);
+
+            return reservedPeriods.some(period => {
+                // Vérifie si les périodes se chevauchent
+                return (
+                    (checkinDate >= period.start && checkinDate <= period.end) ||
+                    (checkoutDate >= period.start && checkoutDate <= period.end) ||
+                    (checkinDate <= period.start && checkoutDate >= period.end)
+                );
+            });
+        }
+
+            // Restreindre les dates au jour actuel ou après
+            checkinInput.setAttribute('min', today);
+            checkoutInput.setAttribute('min', today);
+
+            // Fonction pour valider les dates
+            function validateDates() {
+                const checkinDate = checkinInput.value;
+                const checkoutDate = checkoutInput.value;
+
+                // Si les deux dates sont définies
+                if (checkinDate && checkoutDate) {
+                    if (new Date(checkinDate) > new Date(checkoutDate)) {
+                        alert("La date d'arrivée ne peut pas être après la date de départ.");
+                        checkoutInput.value = ""; // Réinitialise la date de départ
+                        return false;
+                    }
+                    if (isOverlapping(checkinDate, checkoutDate)) {
+                        alert("Les dates sélectionnées chevauchent une période réservée.");
+                        checkoutInput.value = ""; // Réinitialise la date de départ
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // Ajuster la date minimale de départ en fonction de la date d'arrivée
+            checkinInput.addEventListener('change', function () {
+                const checkinDate = checkinInput.value;
+                if (checkinDate) {
+                    checkoutInput.setAttribute('min', checkinDate);
+                    validateDates(); // Vérifie si la nouvelle sélection est cohérente
+                }
+            });
+
+            // Valider lorsque la date de départ est modifiée
+            checkoutInput.addEventListener('change', validateDates);
+
+            // Valider avant la soumission
+            document.querySelector('.btn.btn-dark.mb-2').addEventListener('click', function (event) {
+                if (!validateDates()) {
+                    event.preventDefault(); // Empêche l'envoi si les dates sont incorrectes
+                    return;
+                }
+
+                const checkinDate = checkinInput.value;
+                const checkoutDate = checkoutInput.value;
+
+                if (!checkinDate || !checkoutDate) {
+                    alert("Veuillez sélectionner à la fois la date d'arrivée et la date de départ.");
+                    event.preventDefault();
+                    return;
+                }
+
+                // Remplir les champs cachés pour soumission
+                document.getElementById('checkinInput').value = checkinDate;
+                document.getElementById('checkoutInput').value = checkoutDate;
+            });
+
+        });
+
+
+    </script>
+
+</body>
+</html>

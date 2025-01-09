@@ -1,0 +1,138 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.background-image {
+    position: relative;
+    height: 70vh;
+    background-image: url('../images/hotel.jpg'); /* Remplacez cette URL par celle de votre image */
+    background-size: cover;
+    background-position: center;
+}
+
+.form-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.4);
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.container-chambres {
+    border: 2px ;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 1000px;
+    overflow-y: scroll;
+}
+
+.container-chambres::-webkit-scrollbar {
+    width: 8px;
+}
+
+
+.container-chambres::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 4px;
+}
+
+
+.container-chambres::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.chambre {
+    width: 350px;
+    height: 300px;
+    margin: 20px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.img {
+    width: 350px;
+    height: 200px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+/* style.css */
+
+/* Styles pour la galerie d'images */
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+    .gallery img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+/* Style pour les badges de notation */
+.badge {
+    font-size: 1.1rem;
+    padding: 0.5rem;
+}
+
+/* Styles pour les points forts de la chambre */
+.list-group-horizontal .list-group-item {
+    flex: 1;
+    text-align: center;
+    background-color: #f8f9fa;
+    border: none;
+}
+
+.list-group-item i {
+    margin-right: 5px;
+}
+
+h1, h4, h3 {
+    font-weight: bold;
+}
+
+.btn-primary, .btn-outline-secondary {
+    border-radius: 8px;
+}
+
+.details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.date-form .form-label {
+    font-weight: bold;
+}
+
+
+
+

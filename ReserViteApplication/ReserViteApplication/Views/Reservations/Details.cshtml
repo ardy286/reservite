@@ -1,0 +1,42 @@
+﻿@model ReserViteApplication.Models.Reservation
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Reservation</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateArrivee)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateArrivee)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateDepart)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateDepart)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MontantTotal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MontantTotal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Statut)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Statut)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ReservationId">Modifier</a> |
+    <a asp-action="Index">Retourner dans la page de gestion </a>
+</div>

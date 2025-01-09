@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ReserViteApplication</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ReserViteApplication.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="~/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        @await Html.PartialAsync("_Header")
+        
+       
+        
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            Projet réalisé au sein du <a href="https://www.crosemont.qc.ca/decouverte_rosemont/admission/?utm_term=cegep+de+rosemont&utm_campaign=ct-portes-ouvertes-2022-search-brand&utm_source=adwords&utm_medium=ppc&hsa_acc=6103959280&hsa_cam=21496592576&hsa_grp=165948881500&hsa_ad=706595352444&hsa_src=g&hsa_tgt=kwd-341428852456&hsa_kw=cegep+de+rosemont&hsa_mt=p&hsa_net=adwords&hsa_ver=3&gad_source=1&gclid=Cj0KCQjwsoe5BhDiARIsAOXVoUtBOmUETrK_2ulrYEa24kl91RDMbJhOtIKtWbHbtnOEBhEJwI6YPKwaAtvOEALw_wcB">Cégep de Rosemont</a>
+            par Ariste Kindy <a href="https://www.linkedin.com/in/ardy286/" target="_blank"><i class="fa-brands fa-linkedin fa-lg"></i></a> et Youssef Ayad <a href="https://www.linkedin.com/in/youssef-ayad-4a0303340/" target="_blank"><i class="fa-brands fa-linkedin fa-lg"></i></a>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoftsignalr/8.0.7/signalr.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

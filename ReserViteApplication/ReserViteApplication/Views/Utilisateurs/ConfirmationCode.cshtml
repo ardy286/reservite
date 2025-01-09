@@ -1,0 +1,58 @@
+﻿@model ReserViteApplication.Models.Utilisateur
+@{ViewData["Title"] = "ConfirmationCode";}
+
+<h4>Veuillez entrer le numéro de confirmation reçu par SMS : </h4>
+
+<div class="row">
+    <div class="col-md-4">
+<form id="confirmationForm" method="post" asp-action="CreateUt" asp-controller="Utilisateurs">
+    <!-- Utilisateur passé à la vue, il est envoyé à l'action Create -->
+    <input type="hidden" name="nom" value="@Model.Nom" />
+    <input type="hidden" name="prenom" value="@Model.Prenom" />
+    <input type="hidden" name="email" value="@Model.Email" />
+    <input type="hidden" name="numero" value="@Model.Numero" />
+    <input type="hidden" name="password" value="@Model.MotDePasse" />
+    <input type="hidden" name="confirmPassword" value="@Model.MotDePasse" />
+
+    <div class="form-floating mb-3">
+        <input name="confirmationCode" id="confirmationCode" class="form-control" placeholder="Numéro de confirmation" />
+        <label for="confirmationCode">Numéro de confirmation</label>
+    </div>
+
+    <button type="button" id="submitBtn" class="btn btn-dark">Confirmer</button>
+</form>
+</div>
+</div>
+<!-- Ajouter un message d'erreur -->
+<div id="errorMessage" class="text-danger" style="display:none;">
+    Le code de confirmation est incorrect.
+</div>
+
+<script>
+    // Récupérer le code de confirmation depuis le ViewBag
+    var codeConfirmation = '@ViewBag.CodeConfirmation'.trim();
+    console.log("Code de confirmation : ", codeConfirmation);
+
+    // Récupérer l'élément du formulaire
+    var confirmationCodeInput = document.getElementById('confirmationCode');
+    var submitBtn = document.getElementById('submitBtn');
+    var errorMessage = document.getElementById('errorMessage');
+
+    // Lorsqu'on clique sur le bouton "Confirmer"
+    submitBtn.addEventListener('click', function (e) {
+        // Empêcher la soumission du formulaire par défaut
+        e.preventDefault();
+
+        // Récupérer la valeur entrée par l'utilisateur
+        var enteredCode = confirmationCodeInput.value.trim();
+
+        // Vérifier si le code entré correspond à celui généré
+        if (enteredCode === codeConfirmation) {
+            // Code correct, soumettre le formulaire
+            document.getElementById('confirmationForm').submit();
+        } else {
+            // Code incorrect, afficher un message d'erreur
+            errorMessage.style.display = 'block';
+        }
+    });
+</script>
